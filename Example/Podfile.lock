@@ -1,0 +1,16 @@
+PODS:
+  - CSPieChart (0.1.0)
+
+DEPENDENCIES:
+  - CSPieChart (from `../`)
+
+EXTERNAL SOURCES:
+  CSPieChart:
+    :path: ../
+
+SPEC CHECKSUMS:
+  CSPieChart: d7aaaba7fa2d2e9c91ccb8c763bcda90dc058cd9
+
+PODFILE CHECKSUM: 0b60affab6b1e483df75bea45d23afa23fa2eb14
+
+COCOAPODS: 1.2.0.beta.3

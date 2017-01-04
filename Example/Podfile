@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'CSPieChart_Example' do
+  pod 'CSPieChart', :path => '../'
+
+  target 'CSPieChart_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
