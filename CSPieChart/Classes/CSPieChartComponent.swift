@@ -21,9 +21,6 @@ class CSPieChartComponent: UIView {
         self.startAngle = startAngle
         self.endAngle = endAngle
         self.backgroundColor = color
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapGesture(gesture:)))
-        self.addGestureRecognizer(tap)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,8 +31,13 @@ class CSPieChartComponent: UIView {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code
+        var radius: CGFloat = 0
         
-        let radius = (frame.width / 2) * 0.7
+        if frame.width >= frame.height {
+            radius = (frame.height / 2) * 0.7
+        } else {
+            radius = (frame.width / 2) * 0.7
+        }
         
         let arcPath = UIBezierPath()
         arcPath.move(to: center)
@@ -45,51 +47,5 @@ class CSPieChartComponent: UIView {
         let mask = CAShapeLayer()
         mask.path = arcPath.cgPath
         layer.mask = mask
-    }
-}
-
-extension CSPieChartComponent {
-    func tapGesture(gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: self)
-        if let shapeLayer = layer.mask?.hitTest(touchLocation) as? CAShapeLayer { // If you hit a layer and if its a Shapelayer
-            if shapeLayer.path!.contains(touchLocation) { // Optional, if you are inside its content path
-                print(data!.title)
-            }
-        }
-    }
-}
-
-class CSPieChartForegroundView: UIView {
-    fileprivate var startAngle: CGFloat?
-    fileprivate var endAngle: CGFloat?
-    
-    init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, color: UIColor) {
-        super.init(frame: frame)
-        
-        self.startAngle = startAngle
-        self.endAngle = endAngle
-        self.backgroundColor = UIColor.clear
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        let radius = (frame.width / 2) * 0.7
-        
-        let linePath = UIBezierPath()
-        let midAngle = (startAngle! + endAngle!) / 2
-        
-        let startPoint = CGPoint(x: center.x + cos(midAngle) * (radius - 10), y: center.y + sin(midAngle) * (radius - 10))
-        let turningPoint = CGPoint(x: center.x + cos(midAngle) * (radius + 10), y: center.y + sin(midAngle) * (radius + 10))
-        let isEndPointLeft = turningPoint.x<center.x
-        let endPoint = CGPoint(x: turningPoint.x + (isEndPointLeft ? -1 : 1) * 10, y: turningPoint.y)
-        
-        linePath.move(to: startPoint)
-        linePath.addLine(to: turningPoint)
-        linePath.addLine(to: endPoint)
-        
-        linePath.stroke()
     }
 }

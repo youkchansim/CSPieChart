@@ -6,7 +6,12 @@
 //
 //
 
-struct CSPieChartData {
+public class CSPieChartData: NSObject {
     var title: String
     var value: Double
+    
+    public init(title: String, value: Double) {
+        self.title = title
+        self.value = value
+    }
 }

@@ -8,12 +8,19 @@
 
 import UIKit
 
-class CSPieChartViewController: UIViewController {
-
-    override func viewDidLoad() {
+public class CSPieChartViewController: UIViewController {
+    
+    public var dataSource: CSPieChartDataSource?
+    public var delegate: CSPieChartDelegate?
+    
+    override public func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+    }
+    
+    override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         let randomValue = Double(arc4random() % 361)
         var startAngle = randomValue.toRadian
         
@@ -21,36 +28,47 @@ class CSPieChartViewController: UIViewController {
         let height = width
         let size = CGSize(width: width, height: height)
         
-        let point = CGPoint(x: 0, y: 0)
+        let pieChartPoint = CGPoint(x: 0, y: 0)
+        let pieChartFrame = CGRect(origin: pieChartPoint, size: size)
+        let pieChartView = UIView(frame: pieChartFrame)
         
-        let frame = CGRect(origin: point, size: size)
-        
-        let pieChartView = UIView(frame: frame)
-        
-        let dataList = [
-            CSPieChartData(title: "test1", value: 70),
-            CSPieChartData(title: "test2", value: 70),
-            CSPieChartData(title: "test3", value: 70)
-        ]
-        
-        let colorList = [
-            UIColor.blue,
-            UIColor.brown,
-            UIColor.cyan
-        ]
-        let sum = dataList.map{ $0.value }.reduce(0, +)
-        
-        for (index, item) in dataList.enumerated() {
-            let degree: Double = item.value / sum * 360
-            let endAngle = startAngle + degree.toRadian
+        if let itemCount = dataSource?.numberOfComponentData() {
             
-            let colorIndex = index % colorList.count
-            let component = CSPieChartComponent(frame: frame, startAngle: startAngle, endAngle: endAngle, data: item, color: colorList[colorIndex])
-            let foreground = CSPieChartForegroundView(frame: frame, startAngle: startAngle, endAngle: endAngle, color: UIColor.black)
-            startAngle = endAngle
+            var sum: Double = 0
+            for index in 0..<itemCount {
+                if let data = dataSource?.pieChartComponentData(at: IndexPath(item: index, section: 0)) {
+                    sum += data.value
+                }
+            }
             
-            pieChartView.addSubview(component)
-            pieChartView.addSubview(foreground)
+            for index in 0..<itemCount {
+                if let data = dataSource?.pieChartComponentData(at: IndexPath(item: index, section: 0)) {
+                    let degree: Double = data.value / sum * 360
+                    let endAngle = startAngle + degree.toRadian
+                    
+                    let componentColorsCount = dataSource?.numberOfComponentColors() ?? 0
+                    let compoenetColorIndexPath = IndexPath(item: index % componentColorsCount, section: 0)
+                    let componentColor = dataSource?.pieChartComponentColor(at: compoenetColorIndexPath) ?? UIColor.white
+                    let component = CSPieChartComponent(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, data: data, color: componentColor)
+                    
+                    let lineColorsCount = dataSource?.numberOfLineColors?() ?? 0
+                    let lineColorIndexPath = IndexPath(item: index % componentColorsCount, section: 0)
+                    let lineColor = dataSource?.pieChartLineColor?(at: lineColorIndexPath) ?? UIColor.black
+                    
+                    if let subViewsCount = dataSource?.numberOfComponentSubViews?() {
+                        let subViewIndexPath = IndexPath(item: index % subViewsCount, section: 0)
+                        let subView = dataSource?.pieChartComponentSubView?(at: subViewIndexPath) ?? UIView()
+                        let foregroundView = CSPieChartForegroundView(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, color: lineColor, subView: subView)
+                        
+                        pieChartView.addSubview(component)
+                        pieChartView.addSubview(foregroundView)
+                    } else {
+                        pieChartView.addSubview(component)
+                    }
+                    
+                    startAngle = endAngle
+                }
+            }
         }
         
         view.addSubview(pieChartView)
