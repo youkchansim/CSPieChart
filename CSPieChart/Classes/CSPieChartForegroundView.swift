@@ -15,6 +15,8 @@ class CSPieChartForegroundView: UIView {
     fileprivate var subView: UIView?
     fileprivate var lineColor: UIColor?
     
+    fileprivate var lineLength: CGFloat?
+    
     init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, color: UIColor, subView: UIView) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
@@ -23,6 +25,7 @@ class CSPieChartForegroundView: UIView {
         self.endAngle = endAngle
         self.subView = subView
         self.lineColor = color
+        self.lineLength = 13
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,10 +38,10 @@ class CSPieChartForegroundView: UIView {
         let linePath = UIBezierPath()
         let midAngle = (startAngle! + endAngle!) / 2
         
-        let startPoint = CGPoint(x: center.x + cos(midAngle) * (radius - 10), y: center.y + sin(midAngle) * (radius - 10))
-        let turningPoint = CGPoint(x: center.x + cos(midAngle) * (radius + 10), y: center.y + sin(midAngle) * (radius + 10))
+        let startPoint = CGPoint(x: center.x + cos(midAngle) * (radius - lineLength!), y: center.y + sin(midAngle) * (radius - lineLength!))
+        let turningPoint = CGPoint(x: center.x + cos(midAngle) * (radius + lineLength!), y: center.y + sin(midAngle) * (radius + lineLength!))
         let isEndPointLeft = turningPoint.x < center.x
-        let endPoint = CGPoint(x: turningPoint.x + (isEndPointLeft ? -1 : 1) * 10, y: turningPoint.y)
+        let endPoint = CGPoint(x: turningPoint.x + (isEndPointLeft ? -1 : 1) * lineLength!, y: turningPoint.y)
         
         linePath.move(to: startPoint)
         linePath.addLine(to: turningPoint)
@@ -50,9 +53,9 @@ class CSPieChartForegroundView: UIView {
         
         let x = subView?.frame.width ?? 0
         if isEndPointLeft {
-            subView?.center = CGPoint(x:  endPoint.x - x / 2, y: endPoint.y)
+            subView?.center = CGPoint(x: endPoint.x - x / 2, y: endPoint.y)
         } else {
-            subView?.center = CGPoint(x:  endPoint.x + x / 2, y: endPoint.y)
+            subView?.center = CGPoint(x: endPoint.x + x / 2, y: endPoint.y)
         }
         
         addSubview(subView!)
