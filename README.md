@@ -22,7 +22,7 @@ pod "CSPieChart"
 
 ## Author
 
-chansim.youk, chansim.youk@navercorp.com
+chansim.youk, dbrckstla@naver.com
 
 ## License
 
