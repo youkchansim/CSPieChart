@@ -12,15 +12,18 @@ class CSPieChartComponent: UIView {
 
     fileprivate var startAngle: CGFloat?
     fileprivate var endAngle: CGFloat?
-    fileprivate var data: CSPieChartData?
+    fileprivate var radiusRate: CGFloat?
     
-    init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, data: CSPieChartData, color: UIColor) {
+    var data: CSPieChartData?
+    
+    init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, data: CSPieChartData, color: UIColor, radiusRate: CGFloat) {
         super.init(frame: frame)
         
         self.data = data
         self.startAngle = startAngle
         self.endAngle = endAngle
         self.backgroundColor = color
+        self.radiusRate = radiusRate
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,9 +37,9 @@ class CSPieChartComponent: UIView {
         var radius: CGFloat = 0
         
         if frame.width >= frame.height {
-            radius = (frame.height / 2) * 0.7
+            radius = (frame.height / 2) * self.radiusRate!
         } else {
-            radius = (frame.width / 2) * 0.7
+            radius = (frame.width / 2) * self.radiusRate!
         }
         
         let arcPath = UIBezierPath()
@@ -47,5 +50,16 @@ class CSPieChartComponent: UIView {
         let mask = CAShapeLayer()
         mask.path = arcPath.cgPath
         layer.mask = mask
+    }
+}
+
+extension CSPieChartComponent {
+    func startSpreadAnimation() {
+        self.radiusRate = 0.8
+        setNeedsDisplay()
+    }
+    
+    func stopSpreadAnimation() {
+        
     }
 }

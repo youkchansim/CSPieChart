@@ -13,9 +13,13 @@ public class CSPieChartViewController: UIViewController {
     public var dataSource: CSPieChartDataSource?
     public var delegate: CSPieChartDelegate?
     
+    public var pieChartRadiusRate: CGFloat = 0.7
+    public var pieChartLineLength: CGFloat = 10
+    
+    fileprivate var pieChartView: UIView?
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override public func viewDidAppear(_ animated: Bool) {
@@ -30,7 +34,7 @@ public class CSPieChartViewController: UIViewController {
         
         let pieChartPoint = CGPoint(x: 0, y: 0)
         let pieChartFrame = CGRect(origin: pieChartPoint, size: size)
-        let pieChartView = UIView(frame: pieChartFrame)
+        pieChartView = UIView(frame: pieChartFrame)
         
         if let itemCount = dataSource?.numberOfComponentData() {
             
@@ -49,7 +53,7 @@ public class CSPieChartViewController: UIViewController {
                     let componentColorsCount = dataSource?.numberOfComponentColors() ?? 0
                     let compoenetColorIndexPath = IndexPath(item: index % componentColorsCount, section: 0)
                     let componentColor = dataSource?.pieChartComponentColor(at: compoenetColorIndexPath) ?? UIColor.white
-                    let component = CSPieChartComponent(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, data: data, color: componentColor)
+                    let component = CSPieChartComponent(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, data: data, color: componentColor, radiusRate: self.pieChartRadiusRate)
                     
                     let lineColorsCount = dataSource?.numberOfLineColors?() ?? 0
                     let lineColorIndexPath = IndexPath(item: index % componentColorsCount, section: 0)
@@ -58,12 +62,12 @@ public class CSPieChartViewController: UIViewController {
                     if let subViewsCount = dataSource?.numberOfComponentSubViews?() {
                         let subViewIndexPath = IndexPath(item: index % subViewsCount, section: 0)
                         let subView = dataSource?.pieChartComponentSubView?(at: subViewIndexPath) ?? UIView()
-                        let foregroundView = CSPieChartForegroundView(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, color: lineColor, subView: subView)
+                        let foregroundView = CSPieChartForegroundView(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, lineColor: lineColor, radiusRate: self.pieChartRadiusRate, subView: subView, lineLength: self.pieChartLineLength)
                         
-                        pieChartView.addSubview(component)
-                        pieChartView.addSubview(foregroundView)
+                        pieChartView?.addSubview(component)
+                        pieChartView?.addSubview(foregroundView)
                     } else {
-                        pieChartView.addSubview(component)
+                        pieChartView?.addSubview(component)
                     }
                     
                     startAngle = endAngle
@@ -71,6 +75,22 @@ public class CSPieChartViewController: UIViewController {
             }
         }
         
-        view.addSubview(pieChartView)
+        if let pieChart = pieChartView {
+            view.addSubview(pieChart)
+        }
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let location = touches.first?.location(in: pieChartView) {
+            for subView in pieChartView!.subviews {
+                if subView is CSPieChartComponent {
+                    if let layer = subView.layer.mask as? CAShapeLayer, let path = layer.path {
+                        if path.contains(location), let component = subView as? CSPieChartComponent {
+                            component.startSpreadAnimation() 
+                        }
+                    }
+                }
+            }
+        }
     }
 }

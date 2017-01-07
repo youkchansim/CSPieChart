@@ -15,17 +15,19 @@ class CSPieChartForegroundView: UIView {
     fileprivate var subView: UIView?
     fileprivate var lineColor: UIColor?
     
+    fileprivate var radiusRate: CGFloat?
     fileprivate var lineLength: CGFloat?
     
-    init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, color: UIColor, subView: UIView) {
+    init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, lineColor: UIColor, radiusRate: CGFloat, subView: UIView, lineLength: CGFloat?) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
         
         self.startAngle = startAngle
         self.endAngle = endAngle
+        self.lineColor = lineColor
+        self.radiusRate = radiusRate
         self.subView = subView
-        self.lineColor = color
-        self.lineLength = 13
+        self.lineLength = lineLength
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,7 +35,7 @@ class CSPieChartForegroundView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        let radius = (frame.width / 2) * 0.7
+        let radius = (frame.width / 2) * self.radiusRate!
         
         let linePath = UIBezierPath()
         let midAngle = (startAngle! + endAngle!) / 2
