@@ -15,6 +15,7 @@ class CSPieChartComponent: UIView {
     fileprivate var radiusRate: CGFloat?
     
     var data: CSPieChartData?
+    var isAnimated: Bool?
     
     init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, data: CSPieChartData, color: UIColor, radiusRate: CGFloat) {
         super.init(frame: frame)
@@ -24,6 +25,7 @@ class CSPieChartComponent: UIView {
         self.endAngle = endAngle
         self.backgroundColor = color
         self.radiusRate = radiusRate
+        self.isAnimated = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,12 +56,26 @@ class CSPieChartComponent: UIView {
 }
 
 extension CSPieChartComponent {
-    func startSpreadAnimation() {
-        self.radiusRate = 0.8
-        setNeedsDisplay()
+    func startPieceAnimation() {
+        isAnimated = true
+        
+        let midAngle = (startAngle! + endAngle!) / 2
+        let destinationPoint = CGPoint(x: center.x + cos(midAngle) * 8, y: center.y + sin(midAngle) * 8)
+        UIView.animate(withDuration: 0.3) {
+            self.center = destinationPoint
+            self.superview?.layoutIfNeeded()
+        }
     }
     
-    func stopSpreadAnimation() {
+    func stopPieceAnimation() {
+        isAnimated = false
         
+        let midAngle = (startAngle! + endAngle!) / 2
+        let destinationPoint = CGPoint(x: center.x - cos(midAngle) * 8, y: center.y - sin(midAngle) * 8)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.center = destinationPoint
+            self.superview?.layoutIfNeeded()
+        }
     }
 }

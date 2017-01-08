@@ -17,6 +17,7 @@ public class CSPieChartViewController: UIViewController {
     public var pieChartLineLength: CGFloat = 10
     
     fileprivate var pieChartView: UIView?
+    fileprivate var selectedComponent: CSPieChartComponent?
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +87,18 @@ public class CSPieChartViewController: UIViewController {
                 if subView is CSPieChartComponent {
                     if let layer = subView.layer.mask as? CAShapeLayer, let path = layer.path {
                         if path.contains(location), let component = subView as? CSPieChartComponent {
-                            component.startSpreadAnimation() 
+                            if selectedComponent != component {
+                                selectedComponent?.stopPieceAnimation()
+                                selectedComponent = nil
+                            }
+                            
+                            if !component.isAnimated! {
+                                component.startPieceAnimation()
+                                selectedComponent = component
+                            } else {
+                                component.stopPieceAnimation()
+                                selectedComponent = nil
+                            }
                         }
                     }
                 }

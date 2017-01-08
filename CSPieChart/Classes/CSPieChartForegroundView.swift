@@ -35,7 +35,7 @@ class CSPieChartForegroundView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        let radius = (frame.width / 2) * self.radiusRate!
+        let radius = frame.width * radiusRate! / 2
         
         let linePath = UIBezierPath()
         let midAngle = (startAngle! + endAngle!) / 2
