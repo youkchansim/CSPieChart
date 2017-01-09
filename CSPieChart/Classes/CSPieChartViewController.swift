@@ -71,7 +71,7 @@ public class CSPieChartViewController: UIViewController {
                     component.indexPath = indexPath
                     
                     let lineColorsCount = dataSource?.numberOfLineColors?() ?? 0
-                    let lineColorIndexPath = IndexPath(item: index % componentColorsCount, section: 0)
+                    let lineColorIndexPath = IndexPath(item: index % lineColorsCount, section: 0)
                     let lineColor = dataSource?.pieChartLineColor?(at: lineColorIndexPath) ?? UIColor.black
                     
                     if let subViewsCount = dataSource?.numberOfComponentSubViews?() {
