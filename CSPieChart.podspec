@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'CSPieChart'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of CSPieChart.'
+  s.summary          = 'This is piechart view that is incredibly lightweight and easy to use.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,15 +17,13 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+  s.description      = 'This is incredibly lightweight and easy to use. and you can customize component color, line color, length and subviews(this is appeared to data)'
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/CSPieChart'
+  s.homepage         = 'https://github.com/youkchansim/CSPieChart'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'chansim.youk' => 'chansim.youk@navercorp.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/CSPieChart.git', :tag => s.version.to_s }
+  s.author           = { 'Chasnim Youk' => 'dbrckstla@naver.com' }
+  s.source           = { :git => 'https://github.com/youkchansim/CSPieChart.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
