@@ -58,7 +58,11 @@ public protocol CSPieChartDataSource {
     func pieChartLineColor(at indexPath: IndexPath) -> UIColor
 }
 ```
-
+```Swift
+public protocol CSPieChartDelegate {
+    func didSelectedPieChartComponent(at indexPath: IndexPath)
+}
+```
 If you need more information, check example
 
 ## Author
