@@ -64,6 +64,22 @@ public protocol CSPieChartDelegate {
 }
 ```
 If you need more information, check example
+```Swift
+public class CSPieChartViewController: UIViewController {
+    
+    public var dataSource: CSPieChartDataSource?
+    public var delegate: CSPieChartDelegate?
+    
+    //  Pie chart radius rate that is percentage of frames in the superview
+    public var pieChartRadiusRate: CGFloat = 0.7
+    
+    // Pie chart line length between component and subview
+    public var pieChartLineLength: CGFloat = 10
+    
+    // If this is true, component is animated when it is selected
+    public var isSelectedAnimation: Bool = false
+}
+```
 
 ## Author
 
