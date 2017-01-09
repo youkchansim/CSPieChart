@@ -7,8 +7,8 @@
 //
 
 public class CSPieChartData: NSObject {
-    var title: String
-    var value: Double
+    public var title: String
+    public var value: Double
     
     public init(title: String, value: Double) {
         self.title = title

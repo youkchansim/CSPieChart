@@ -38,66 +38,75 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         pieChart?.dataSource = self
         pieChart?.delegate = self
+        pieChart?.isSelectedAnimation = true
         
         pieChart?.pieChartRadiusRate = 0.6
         pieChart?.pieChartLineLength = 10
-//        let view1 = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view1.backgroundColor = UIColor.red
+        
+//        let view1 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+//        view1.image = UIImage(named: "test.png")
+//        view1.contentMode = .scaleAspectFill
+//        view1.clipsToBounds = true
 //        view1.layer.cornerRadius = view1.frame.width / 2
 //        
-//        let view2 = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view2.backgroundColor = UIColor.orange
+//        let view2 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+//        view2.image = UIImage(named: "test.png")
+//        view2.contentMode = .scaleAspectFill
+//        view2.clipsToBounds = true
 //        view2.layer.cornerRadius = view1.frame.width / 2
 //        
-//        let view3 = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view3.backgroundColor = UIColor.yellow
+//        let view3 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+//        view3.image = UIImage(named: "test.png")
+//        view3.contentMode = .scaleAspectFill
+//        view3.clipsToBounds = true
 //        view3.layer.cornerRadius = view1.frame.width / 2
 //        
-//        let view4 = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view4.backgroundColor = UIColor.green
+//        let view4 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+//        view4.image = UIImage(named: "test.png")
+//        view4.contentMode = .scaleAspectFill
+//        view4.clipsToBounds = true
 //        view4.layer.cornerRadius = view1.frame.width / 2
 //        
-//        let view5 = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view5.backgroundColor = UIColor.blue
+//        let view5 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+//        view5.image = UIImage(named: "test.png")
+//        view5.contentMode = .scaleAspectFill
+//        view5.clipsToBounds = true
 //        view5.layer.cornerRadius = view1.frame.width / 2
 //        
-//        let view6 = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view6.backgroundColor = UIColor.magenta
+//        let view6 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+//        view6.image = UIImage(named: "test.png")
+//        view6.contentMode = .scaleAspectFill
+//        view6.clipsToBounds = true
 //        view6.layer.cornerRadius = view1.frame.width / 2
+        
         let view1 = UILabel()
         view1.text = "red"
         view1.textAlignment = .center
-        view1.backgroundColor = UIColor.groupTableViewBackground
         view1.sizeToFit()
         
         let view2 = UILabel()
         view2.text = "orange"
         view2.textAlignment = .center
-        view2.backgroundColor = UIColor.groupTableViewBackground
         view2.sizeToFit()
         
         let view3 = UILabel()
         view3.text = "yellow"
         view3.textAlignment = .center
-        view3.backgroundColor = UIColor.groupTableViewBackground
         view3.sizeToFit()
         
         let view4 = UILabel()
         view4.text = "green"
         view4.textAlignment = .center
-        view4.backgroundColor = UIColor.groupTableViewBackground
         view4.sizeToFit()
         
         let view5 = UILabel()
         view5.text = "blue"
         view5.textAlignment = .center
-        view5.backgroundColor = UIColor.groupTableViewBackground
         view5.sizeToFit()
         
         let view6 = UILabel()
         view6.text = "magenta"
         view6.textAlignment = .center
-        view6.backgroundColor = UIColor.groupTableViewBackground
         view6.sizeToFit()
         
         subViewList.append(view1)
@@ -136,6 +145,15 @@ extension ViewController: CSPieChartDataSource {
         return colorList[index]
     }
     
+    func numberOfLineColors() -> Int {
+        return colorList.count
+    }
+    
+    func pieChartLineColor(at indexPath: IndexPath) -> UIColor {
+        let index = indexPath.item
+        return colorList[index]
+    }
+    
     func numberOfComponentSubViews() -> Int {
         return subViewList.count
     }
@@ -148,6 +166,7 @@ extension ViewController: CSPieChartDataSource {
 
 extension ViewController: CSPieChartDelegate {
     func didSelectedPieChartComponent(at indexPath: IndexPath) {
-        
+        let data = dataList[indexPath.item]
+        print(data.title)
     }
 }

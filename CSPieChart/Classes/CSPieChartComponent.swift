@@ -15,6 +15,7 @@ class CSPieChartComponent: UIView {
     fileprivate var radiusRate: CGFloat?
     
     var data: CSPieChartData?
+    var indexPath: IndexPath?
     var isAnimated: Bool?
     
     init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, data: CSPieChartData, color: UIColor, radiusRate: CGFloat) {
