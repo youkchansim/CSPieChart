@@ -8,6 +8,13 @@
 
 import UIKit
 
+public enum SelectingAnimationType {
+    case none
+    case piece
+    case scaleUp
+    case touch
+}
+
 public class CSPieChartViewController: UIViewController {
     
     public var dataSource: CSPieChartDataSource?
@@ -19,8 +26,8 @@ public class CSPieChartViewController: UIViewController {
     // Pie chart line length between component and subview
     public var pieChartLineLength: CGFloat = 10
     
-    // If this is true, component is animated when it is selected
-    public var isSelectedAnimation: Bool = false
+    //  This is piechart component selecting animation. default is none
+    public var seletingAnimationType: SelectingAnimationType = .none
     
     fileprivate var pieChartView: UIView?
     fileprivate var selectedComponent: CSPieChartComponent?
@@ -44,7 +51,7 @@ public class CSPieChartViewController: UIViewController {
             
             var sum: Double = 0
             for index in 0..<itemCount {
-                if let data = dataSource?.pieChartComponentData(at: IndexPath(item: index, section: 0)) {
+                if let data = dataSource?.pieChartComponentData(at: index) {
                     sum += data.value
                 }
             }
@@ -52,38 +59,41 @@ public class CSPieChartViewController: UIViewController {
             var startAngle: CGFloat = 0
             
             if itemCount > 0 {
-                let indexPathForRandomStartAngle = IndexPath(item: 0, section: 0)
-                if let data = dataSource?.pieChartComponentData(at: indexPathForRandomStartAngle) {
+                if let data = dataSource?.pieChartComponentData(at: 0) {
                     startAngle = (sum / data.value).toRadian
                 }
             }
             
             for index in 0..<itemCount {
-                let indexPath = IndexPath(item: index, section: 0)
-                if let data = dataSource?.pieChartComponentData(at: indexPath) {
+                if let data = dataSource?.pieChartComponentData(at: index) {
                     let degree: Double = data.value / sum * 360
                     let endAngle = startAngle + degree.toRadian
                     
-                    let componentColorsCount = dataSource?.numberOfComponentColors() ?? 0
-                    let compoenetColorIndexPath = IndexPath(item: index % componentColorsCount, section: 0)
-                    let componentColor = dataSource?.pieChartComponentColor(at: compoenetColorIndexPath) ?? UIColor.white
-                    let component = CSPieChartComponent(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, data: data, color: componentColor, radiusRate: self.pieChartRadiusRate)
-                    component.indexPath = indexPath
-                    
-                    let lineColorsCount = dataSource?.numberOfLineColors?() ?? 0
-                    let lineColorIndexPath = IndexPath(item: index % lineColorsCount, section: 0)
-                    let lineColor = dataSource?.pieChartLineColor?(at: lineColorIndexPath) ?? UIColor.black
-                    
-                    if let subViewsCount = dataSource?.numberOfComponentSubViews?() {
-                        let subViewIndexPath = IndexPath(item: index % subViewsCount, section: 0)
-                        let subView = dataSource?.pieChartComponentSubView?(at: subViewIndexPath) ?? UIView()
-                        let foregroundView = CSPieChartForegroundView(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, lineColor: lineColor, radiusRate: self.pieChartRadiusRate, subView: subView, lineLength: self.pieChartLineLength)
-                        
-                        pieChartView?.addSubview(component)
-                        pieChartView?.addSubview(foregroundView)
-                    } else {
-                        pieChartView?.addSubview(component)
+                    var componentColor: UIColor?
+                    if let componentColorsCount = dataSource?.numberOfComponentColors() {
+                        let compoenetColorIndex = index % componentColorsCount
+                        componentColor = dataSource?.pieChartComponentColor(at: compoenetColorIndex) ?? .white
                     }
+                    
+                    var lineColor: UIColor?
+                    if let lineColorsCount = dataSource?.numberOfLineColors?() {
+                        let lineColorIndex = index % lineColorsCount
+                        lineColor = dataSource?.pieChartLineColor?(at: lineColorIndex) ?? .black
+                    }
+                    
+                    var subView: UIView?
+                    if let subViewsCount = dataSource?.numberOfComponentSubViews?() {
+                        let subViewIndex = index % subViewsCount
+                        subView = dataSource?.pieChartComponentSubView?(at: subViewIndex) ?? UIView()
+                    }
+                    
+                    let component = CSPieChartComponent(frame: pieChartFrame, startAngle: startAngle, endAngle: endAngle, data: data, index: index, radiusRate: pieChartRadiusRate)
+                    component.componentColor = componentColor
+                    component.subView = subView
+                    component.lineColor = lineColor
+                    component.lineLength = pieChartLineLength
+                    
+                    pieChartView?.addSubview(component)
                     
                     startAngle = endAngle
                 }
@@ -96,30 +106,28 @@ public class CSPieChartViewController: UIViewController {
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if isSelectedAnimation {
-            guard let location = touches.first?.location(in: pieChartView) else {
-                return
-            }
-            
-            for subView in pieChartView!.subviews {
-                if let component = subView as? CSPieChartComponent, let layer = subView.layer.mask as? CAShapeLayer {
-                    if let path = layer.path, path.contains(location) {
-                        if selectedComponent != component {
-                            selectedComponent?.stopPieceAnimation()
-                            selectedComponent = nil
-                        }
-                        
-                        if !component.isAnimated! {
-                            component.startPieceAnimation()
-                            selectedComponent = component
-                            delegate?.didSelectedPieChartComponent?(at: component.indexPath!)
-                        } else {
-                            component.stopPieceAnimation()
-                            selectedComponent = nil
-                        }
-                        
-                        return
+        guard let location = touches.first?.location(in: pieChartView) else {
+            return
+        }
+        
+        pieChartView!.subviews.forEach {
+            if let component = $0 as? CSPieChartComponent {
+                if component.containsPoint(point: location) {
+                    if selectedComponent != component {
+                        selectedComponent?.stopAnimation(animationType: seletingAnimationType)
+                        selectedComponent = nil
                     }
+                    
+                    if !component.isAnimated! {
+                        component.startAnimation(animationType: seletingAnimationType)
+                        selectedComponent = component
+                        delegate?.didSelectedPieChartComponent?(at: component.index!)
+                    } else {
+                        component.stopAnimation(animationType: seletingAnimationType)
+                        selectedComponent = nil
+                    }
+                    
+                    return
                 }
             }
         }
@@ -127,14 +135,14 @@ public class CSPieChartViewController: UIViewController {
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let component = selectedComponent, let location = touches.first?.location(in: component) else { return }
-        if let layer = component.layer.mask as? CAShapeLayer, let path = layer.path, !path.contains(location) {
-            selectedComponent?.stopPieceAnimation()
+        if component.containsPoint(point: location) {
+            selectedComponent?.stopAnimation(animationType: seletingAnimationType)
             selectedComponent = nil
         }
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        selectedComponent?.stopPieceAnimation()
+        selectedComponent?.stopAnimation(animationType: seletingAnimationType)
         selectedComponent = nil
     }
 }

@@ -38,46 +38,10 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         pieChart?.dataSource = self
         pieChart?.delegate = self
-        pieChart?.isSelectedAnimation = true
         
         pieChart?.pieChartRadiusRate = 0.6
         pieChart?.pieChartLineLength = 10
-        
-//        let view1 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view1.image = UIImage(named: "test.png")
-//        view1.contentMode = .scaleAspectFill
-//        view1.clipsToBounds = true
-//        view1.layer.cornerRadius = view1.frame.width / 2
-//        
-//        let view2 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view2.image = UIImage(named: "test.png")
-//        view2.contentMode = .scaleAspectFill
-//        view2.clipsToBounds = true
-//        view2.layer.cornerRadius = view1.frame.width / 2
-//        
-//        let view3 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view3.image = UIImage(named: "test.png")
-//        view3.contentMode = .scaleAspectFill
-//        view3.clipsToBounds = true
-//        view3.layer.cornerRadius = view1.frame.width / 2
-//        
-//        let view4 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view4.image = UIImage(named: "test.png")
-//        view4.contentMode = .scaleAspectFill
-//        view4.clipsToBounds = true
-//        view4.layer.cornerRadius = view1.frame.width / 2
-//        
-//        let view5 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view5.image = UIImage(named: "test.png")
-//        view5.contentMode = .scaleAspectFill
-//        view5.clipsToBounds = true
-//        view5.layer.cornerRadius = view1.frame.width / 2
-//        
-//        let view6 = UIImageView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
-//        view6.image = UIImage(named: "test.png")
-//        view6.contentMode = .scaleAspectFill
-//        view6.clipsToBounds = true
-//        view6.layer.cornerRadius = view1.frame.width / 2
+        pieChart?.seletingAnimationType = .scaleUp
         
         let view1 = UILabel()
         view1.text = "red"
@@ -131,8 +95,7 @@ extension ViewController: CSPieChartDataSource {
         return dataList.count
     }
     
-    func pieChartComponentData(at indexPath: IndexPath) -> CSPieChartData {
-        let index = indexPath.item
+    func pieChartComponentData(at index: Int) -> CSPieChartData {
         return dataList[index]
     }
     
@@ -140,8 +103,7 @@ extension ViewController: CSPieChartDataSource {
         return colorList.count
     }
     
-    func pieChartComponentColor(at indexPath: IndexPath) -> UIColor {
-        let index = indexPath.item
+    func pieChartComponentColor(at index: Int) -> UIColor {
         return colorList[index]
     }
     
@@ -149,8 +111,7 @@ extension ViewController: CSPieChartDataSource {
         return colorList.count
     }
     
-    func pieChartLineColor(at indexPath: IndexPath) -> UIColor {
-        let index = indexPath.item
+    func pieChartLineColor(at index: Int) -> UIColor {
         return colorList[index]
     }
     
@@ -158,15 +119,14 @@ extension ViewController: CSPieChartDataSource {
         return subViewList.count
     }
     
-    func pieChartComponentSubView(at indexPath: IndexPath) -> UIView {
-        let index = indexPath.item
+    func pieChartComponentSubView(at index: Int) -> UIView {
         return subViewList[index]
     }
 }
 
 extension ViewController: CSPieChartDelegate {
-    func didSelectedPieChartComponent(at indexPath: IndexPath) {
-        let data = dataList[indexPath.item]
+    func didSelectedPieChartComponent(at index: Int) {
+        let data = dataList[index]
         print(data.title)
     }
 }
