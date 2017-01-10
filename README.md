@@ -7,6 +7,9 @@
 
 ![](Example/ReadMeResource/gif1.gif)
 ![](Example/ReadMeResource/gif2.gif)
+![](Example/ReadMeResource/gif3.gif)
+
+Supports iOS 8.3+, Swift 3.0+
 
 ## Example
 
@@ -63,23 +66,22 @@ public protocol CSPieChartDelegate {
     func didSelectedPieChartComponent(at indexPath: IndexPath)
 }
 ```
-If you need more information, check example
+
+You can set some option
+
 ```Swift
-public class CSPieChartViewController: UIViewController {
-    
-    public var dataSource: CSPieChartDataSource?
-    public var delegate: CSPieChartDelegate?
-    
-    //  Pie chart radius rate that is percentage of frames in the superview
+    //  Pie chart radius rate that is percentage of frames in the superview. default is 0.7
     public var pieChartRadiusRate: CGFloat = 0.7
     
-    // Pie chart line length between component and subview
+    // Pie chart line length between component and subview. default is 10
     public var pieChartLineLength: CGFloat = 10
     
-    // If this is true, component is animated when it is selected
-    public var isSelectedAnimation: Bool = false
+    //  This is piechart component selecting animation. default is none
+    public var seletingAnimationType: SelectingAnimationType = .none
 }
 ```
+
+If you need more information, check example
 
 ## Author
 
