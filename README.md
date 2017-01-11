@@ -1,15 +1,13 @@
 # CSPieChart
 
-[![CI Status](http://img.shields.io/travis/chansim.youk/CSPieChart.svg?style=flat)](https://travis-ci.org/chansim.youk/CSPieChart)
 [![Version](https://img.shields.io/cocoapods/v/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
 [![License](https://img.shields.io/cocoapods/l/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
-[![Platform](https://img.shields.io/cocoapods/p/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
+![iOS 8.3+](https://img.shields.io/badge/iOS-8.0%2B-blue.svg)
+![Swift 3.0+](https://img.shields.io/badge/Swift-3.0%2B-orange.svg)
 
 ![](Example/ReadMeResource/gif1.gif)
 ![](Example/ReadMeResource/gif2.gif)
 ![](Example/ReadMeResource/gif3.gif)
-
-Supports iOS 8.3+, Swift 3.0+
 
 ## Example
 
