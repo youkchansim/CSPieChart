@@ -65,7 +65,7 @@ public protocol CSPieChartDelegate {
 }
 ```
 
-You can set some option
+You can set some options
 
 ```Swift
     //  Pie chart radius rate that is percentage of frames in the superview. default is 0.7
