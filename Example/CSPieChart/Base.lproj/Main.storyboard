@@ -22,41 +22,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zef-zf-OMX">
-                                <rect key="frame" x="0.0" y="146" width="375" height="375"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nd-Wd-LMz" customClass="CSPieChart" customModule="CSPieChart">
+                                <rect key="frame" x="0.0" y="145.5" width="375" height="375"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="zef-zf-OMX" secondAttribute="height" multiplier="1:1" id="1uC-6p-WA7"/>
+                                    <constraint firstAttribute="width" secondItem="9nd-Wd-LMz" secondAttribute="height" multiplier="1:1" id="yaU-MW-vuM"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="LQP-sS-vDJ" kind="embed" identifier="pieChart" id="h92-iX-u45"/>
-                                </connections>
-                            </containerView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="zef-zf-OMX" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="15A-Ur-KZt"/>
-                            <constraint firstAttribute="trailing" secondItem="zef-zf-OMX" secondAttribute="trailing" id="Air-Ih-UCs"/>
-                            <constraint firstItem="zef-zf-OMX" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="vvu-NR-ThN"/>
-                            <constraint firstItem="zef-zf-OMX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="wib-jQ-bsy"/>
+                            <constraint firstItem="9nd-Wd-LMz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="82Z-kw-DVJ"/>
+                            <constraint firstAttribute="trailing" secondItem="9nd-Wd-LMz" secondAttribute="trailing" id="dtD-2O-50I"/>
+                            <constraint firstItem="9nd-Wd-LMz" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="mRY-gt-V65"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="pieChart" destination="9nd-Wd-LMz" id="snU-1T-69A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-        </scene>
-        <!--Pie Chart View Controller-->
-        <scene sceneID="fwb-wz-b5y">
-            <objects>
-                <viewController id="LQP-sS-vDJ" customClass="CSPieChartViewController" customModule="CSPieChart" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="IWu-qc-1FJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zSF-Lp-Zei" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="874" y="37"/>
         </scene>
     </scenes>
 </document>

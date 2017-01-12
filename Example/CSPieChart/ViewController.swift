@@ -10,8 +10,8 @@ import UIKit
 import CSPieChart
 
 class ViewController: UIViewController {
-
-    var pieChart: CSPieChartViewController?
+    
+    @IBOutlet weak var pieChart: CSPieChart!
     
     var dataList = [
         CSPieChartData(title: "test1", value: 30),
@@ -79,14 +79,6 @@ class ViewController: UIViewController {
         subViewList.append(view4)
         subViewList.append(view5)
         subViewList.append(view6)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        if segue.identifier == "pieChart" {
-            self.pieChart = segue.destination as? CSPieChartViewController
-        }
     }
 }
 
