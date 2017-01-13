@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CSPieChart'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'This is piechart view that is incredibly lightweight and easy to use.'
 
 # This description is used to generate tags and improve search results.
