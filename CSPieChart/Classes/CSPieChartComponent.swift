@@ -71,32 +71,31 @@ extension CSPieChartComponent {
     }
     
     func drawLineAndSubview(withCenter: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) {
-        if let subView = self.subView {
-            let linePath = UIBezierPath()
-            let midAngle = (startAngle + endAngle) / 2
-            
-            let startPoint = CGPoint(x: withCenter.x + cos(midAngle) * (radius - lineLength!), y: withCenter.y + sin(midAngle) * (radius - lineLength!))
-            let turningPoint = CGPoint(x: withCenter.x + cos(midAngle) * (radius + lineLength!), y: withCenter.y + sin(midAngle) * (radius + lineLength!))
-            let isEndPointLeft = turningPoint.x < withCenter.x
-            let endPoint = CGPoint(x: turningPoint.x + (isEndPointLeft ? -1 : 1) * lineLength!, y: turningPoint.y)
-            
-            linePath.move(to: startPoint)
-            linePath.addLine(to: turningPoint)
-            linePath.addLine(to: endPoint)
-            
-            lineColor?.setStroke()
-            linePath.stroke()
-            linePath.close()
-            
-            let x = subView.frame.width
-            if isEndPointLeft {
-                subView.center = CGPoint(x: endPoint.x - x / 2, y: endPoint.y)
-            } else {
-                subView.center = CGPoint(x: endPoint.x + x / 2, y: endPoint.y)
-            }
-            
-            addSubview(subView)
+        guard let subView = self.subView else { return }
+        let linePath = UIBezierPath()
+        let midAngle = (startAngle + endAngle) / 2
+        
+        let startPoint = CGPoint(x: withCenter.x + cos(midAngle) * (radius - lineLength!), y: withCenter.y + sin(midAngle) * (radius - lineLength!))
+        let turningPoint = CGPoint(x: withCenter.x + cos(midAngle) * (radius + lineLength!), y: withCenter.y + sin(midAngle) * (radius + lineLength!))
+        let isEndPointLeft = turningPoint.x < withCenter.x
+        let endPoint = CGPoint(x: turningPoint.x + (isEndPointLeft ? -1 : 1) * lineLength!, y: turningPoint.y)
+        
+        linePath.move(to: startPoint)
+        linePath.addLine(to: turningPoint)
+        linePath.addLine(to: endPoint)
+        
+        lineColor?.setStroke()
+        linePath.stroke()
+        linePath.close()
+        
+        let x = subView.frame.width
+        if isEndPointLeft {
+            subView.center = CGPoint(x: endPoint.x - x / 2, y: endPoint.y)
+        } else {
+            subView.center = CGPoint(x: endPoint.x + x / 2, y: endPoint.y)
         }
+        
+        addSubview(subView)
     }
 }
 

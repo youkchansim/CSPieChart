@@ -89,42 +89,54 @@ public class CSPieChart: UIView {
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let location = touches.first?.location(in: self) {
-            subviews.forEach {
-                if let component = $0 as? CSPieChartComponent {
-                    if component.containsPoint(point: location) {
-                        if selectedComponent != component {
-                            selectedComponent?.stopAnimation(animationType: seletingAnimationType)
-                            selectedComponent = nil
-                        }
-                        
-                        if !component.isAnimated! {
-                            component.startAnimation(animationType: seletingAnimationType)
-                            selectedComponent = component
-                            delegate?.didSelectedPieChartComponent?(at: component.index!)
-                        } else {
-                            component.stopAnimation(animationType: seletingAnimationType)
-                            selectedComponent = nil
-                        }
-                        
-                        return
-                    }
+        guard let location = touches.first?.location(in: self) else { return }
+        subviews.forEach {
+            guard let component = $0 as? CSPieChartComponent else { return }
+            
+            if component.containsPoint(point: location) {
+                if selectedComponent != component {
+                    selectedComponent?.stopAnimation(animationType: seletingAnimationType)
+                    selectedComponent = nil
                 }
+                
+                if !component.isAnimated! {
+                    component.startAnimation(animationType: seletingAnimationType)
+                    selectedComponent = component
+                    delegate?.didSelectedPieChartComponent?(at: component.index!)
+                } else {
+                    component.stopAnimation(animationType: seletingAnimationType)
+                    selectedComponent = nil
+                }
+                
+                return
             }
         }
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let component = selectedComponent, let location = touches.first?.location(in: component) {
-            if component.containsPoint(point: location) {
-                selectedComponent?.stopAnimation(animationType: seletingAnimationType)
-                selectedComponent = nil
-            }
+        guard let component = selectedComponent else { return }
+        guard let location = touches.first?.location(in: component) else { return }
+        
+        if !component.containsPoint(point: location) {
+            selectedComponent?.stopAnimation(animationType: seletingAnimationType)
+            selectedComponent?.isAnimated = false
+            selectedComponent = nil
         }
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         selectedComponent?.stopAnimation(animationType: seletingAnimationType)
+        selectedComponent?.isAnimated = false
         selectedComponent = nil
+    }
+}
+
+public extension CSPieChart {
+    public func reloadPieChart() {
+        subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        
+        setNeedsDisplay()
     }
 }
