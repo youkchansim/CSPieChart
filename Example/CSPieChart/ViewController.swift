@@ -14,12 +14,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var pieChart: CSPieChart!
     
     var dataList = [
-        CSPieChartData(title: "test1", value: 30),
-        CSPieChartData(title: "test2", value: 30),
-        CSPieChartData(title: "test3", value: 30),
-        CSPieChartData(title: "test4", value: 30),
-        CSPieChartData(title: "test5", value: 30),
-        CSPieChartData(title: "test6", value: 30)
+        CSPieChartData(key: "test1", value: 30),
+        CSPieChartData(key: "test2", value: 30),
+        CSPieChartData(key: "test3", value: 30),
+        CSPieChartData(key: "test4", value: 30),
+        CSPieChartData(key: "test5", value: 30),
+        CSPieChartData(key: "test6", value: 30)
     ]
     
     var colorList: [UIColor] = [
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         
         pieChart?.pieChartRadiusRate = 0.6
         pieChart?.pieChartLineLength = 10
-        pieChart?.seletingAnimationType = .scaleUp
+        pieChart?.seletingAnimationType = .touch
         
         let view1 = UILabel()
         view1.text = "red"
@@ -119,6 +119,6 @@ extension ViewController: CSPieChartDataSource {
 extension ViewController: CSPieChartDelegate {
     func didSelectedPieChartComponent(at index: Int) {
         let data = dataList[index]
-        print(data.title)
+        print(data.key)
     }
 }

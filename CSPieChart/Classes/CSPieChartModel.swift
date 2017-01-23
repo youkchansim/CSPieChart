@@ -7,11 +7,11 @@
 //
 
 public class CSPieChartData: NSObject {
-    public var title: String
+    public var key: String
     public var value: Double
     
-    public init(title: String, value: Double) {
-        self.title = title
+    public init(key: String, value: Double) {
+        self.key = key
         self.value = value
     }
 }
