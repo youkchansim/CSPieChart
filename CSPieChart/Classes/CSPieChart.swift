@@ -76,11 +76,12 @@ public class CSPieChart: UIView {
                     
                     let component = CSPieChartComponent(frame: bounds, startAngle: startAngle, endAngle: endAngle, data: data, index: index, radiusRate: pieChartRadiusRate)
                     component.componentColor = componentColor
-                    component.subView = subView
+                    component.subView = subView?.layer
                     component.lineColor = lineColor
                     component.lineLength = pieChartLineLength
                     
-                    addSubview(component)
+                    layer.addSublayer(component)
+                    component.setNeedsDisplay()
                     
                     startAngle = endAngle
                 }
@@ -90,25 +91,15 @@ public class CSPieChart: UIView {
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-        subviews.forEach {
-            guard let component = $0 as? CSPieChartComponent else { return }
-            
-            if component.containsPoint(point: location) {
-                if selectedComponent != component {
-                    selectedComponent?.stopAnimation(animationType: seletingAnimationType)
-                    selectedComponent = nil
-                }
-                
-                if !component.isAnimated! {
-                    component.startAnimation(animationType: seletingAnimationType)
-                    selectedComponent = component
-                } else {
-                    component.stopAnimation(animationType: seletingAnimationType)
-                    selectedComponent = nil
-                }
-                
-                return
-            }
+        guard let layers = layer.sublayers else { return }
+        guard let component = (layers.flatMap { $0 as? CSPieChartComponent }.filter { $0.path?.contains(location) ?? false }.first) else { return }
+        
+        if !component.isAnimated {
+            component.startAnimation(animationType: seletingAnimationType)
+            selectedComponent = component
+        } else {
+            component.stopAnimation(animationType: seletingAnimationType)
+            selectedComponent = nil
         }
     }
     
@@ -118,7 +109,7 @@ public class CSPieChart: UIView {
         
         if !component.containsPoint(point: location) {
             component.stopAnimation(animationType: seletingAnimationType)
-            component.isAnimated = false
+            selectedComponent = nil
         }
     }
     
@@ -131,15 +122,13 @@ public class CSPieChart: UIView {
         }
         
         component.stopAnimation(animationType: seletingAnimationType)
-        component.isAnimated = false
+        selectedComponent = nil
     }
 }
 
 public extension CSPieChart {
     public func reloadPieChart() {
-        subviews.forEach {
-            $0.removeFromSuperview()
-        }
+        layer.sublayers?.removeAll()
         
         setNeedsDisplay()
     }

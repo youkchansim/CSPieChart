@@ -9,25 +9,23 @@
 import UIKit
 import CoreGraphics
 
-class CSPieChartComponent: UIView {
+class CSPieChartComponent: CALayer {
 
     fileprivate var startAngle: CGFloat?
     fileprivate var endAngle: CGFloat?
     fileprivate var radiusRate: CGFloat?
-    fileprivate var path: UIBezierPath?
     
+    internal(set) var path: UIBezierPath?
     internal(set) var componentColor: UIColor?
     internal(set) var lineColor: UIColor?
     internal(set) var lineLength: CGFloat?
-    internal(set) var subView: UIView?
+    internal(set) var subView: CALayer?
     
     internal(set) var data: CSPieChartData?
     internal(set) var index: Int?
-    internal(set) var isAnimated: Bool?
+    internal(set) var isAnimated: Bool = false
     
     init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, data: CSPieChartData, index: Int, radiusRate: CGFloat) {
-        super.init(frame: frame)
-        self.backgroundColor = .clear
         
         self.startAngle = startAngle
         self.endAngle = endAngle
@@ -35,15 +33,23 @@ class CSPieChartComponent: UIView {
         self.index = index
         self.radiusRate = radiusRate
         
-        self.isAnimated = false
+        super.init()
+        
+        self.frame = frame
+        self.contentsScale = UIScreen.main.scale
+        self.shadowOffset = .zero
+    }
+    
+    override init(layer: Any) {
+        super.init(layer: layer)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
+    override func draw(in ctx: CGContext) {
+        super.draw(in: ctx)
         
         // Drawing code
         var radius: CGFloat = 0
@@ -54,24 +60,35 @@ class CSPieChartComponent: UIView {
             radius = (frame.width / 2) * radiusRate!
         }
         
-        drawComponent(withCenter: center, radius: radius, startAngle: startAngle!, endAngle: endAngle!)
-        drawLineAndSubview(withCenter: center, radius: radius, startAngle: startAngle!, endAngle: endAngle!)
+        ctx.beginPath()
+        ctx.setFillColor(componentColor!.cgColor)
+        ctx.setStrokeColor(UIColor.clear.cgColor)
+        ctx.addPath(drawComponent(withCenter: position, radius: radius, startAngle: startAngle!, endAngle: endAngle!))
+        ctx.closePath()
+        ctx.drawPath(using: .fillStroke)
+        
+        ctx.beginPath()
+        ctx.setStrokeColor(lineColor!.cgColor)
+        ctx.setFillColor(UIColor.clear.cgColor)
+        ctx.addPath(drawLineAndSubview(withCenter: position, radius: radius, startAngle: startAngle!, endAngle: endAngle!))
+        ctx.closePath()
+        ctx.drawPath(using: .fillStroke)
     }
 }
 
 extension CSPieChartComponent {
-    func drawComponent(withCenter: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) {
+    func drawComponent(withCenter: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) -> CGPath {
         path = UIBezierPath()
         path?.move(to: withCenter)
         path?.addArc(withCenter: withCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
-        componentColor?.setFill()
+        path?.close()
         
-        path?.fill()
+        return path!.cgPath
     }
     
-    func drawLineAndSubview(withCenter: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) {
-        guard let subView = self.subView else { return }
+    func drawLineAndSubview(withCenter: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat) -> CGPath {
+        guard let subView = self.subView else { return UIBezierPath().cgPath }
         let linePath = UIBezierPath()
         let midAngle = (startAngle + endAngle) / 2
         
@@ -82,20 +99,20 @@ extension CSPieChartComponent {
         
         linePath.move(to: startPoint)
         linePath.addLine(to: turningPoint)
+        linePath.move(to: turningPoint)
         linePath.addLine(to: endPoint)
-        
-        lineColor?.setStroke()
-        linePath.stroke()
         linePath.close()
         
         let x = subView.frame.width
         if isEndPointLeft {
-            subView.center = CGPoint(x: endPoint.x - x / 2, y: endPoint.y)
+            subView.position = CGPoint(x: endPoint.x - x / 2, y: endPoint.y)
         } else {
-            subView.center = CGPoint(x: endPoint.x + x / 2, y: endPoint.y)
+            subView.position = CGPoint(x: endPoint.x + x / 2, y: endPoint.y)
         }
         
-        addSubview(subView)
+        addSublayer(subView)
+        
+        return linePath.cgPath
     }
 }
 
@@ -134,44 +151,45 @@ extension CSPieChartComponent {
     
     private func startPieceAnimation() {
         let midAngle = (startAngle! + endAngle!) / 2
-        let destinationPoint = CGPoint(x: center.x + cos(midAngle) * 8, y: center.y + sin(midAngle) * 8)
+        let destinationPoint = CGPoint(x: position.x + cos(midAngle) * 8, y: position.y + sin(midAngle) * 8)
         UIView.animate(withDuration: 0.3) {
-            self.center = destinationPoint
-            self.superview?.layoutIfNeeded()
+            self.position = destinationPoint
         }
     }
     
     private func stopPieceAnimation() {
         let midAngle = (startAngle! + endAngle!) / 2
-        let destinationPoint = CGPoint(x: center.x - cos(midAngle) * 8, y: center.y - sin(midAngle) * 8)
-        
+        let destinationPoint = CGPoint(x: position.x - cos(midAngle) * 8, y: position.y - sin(midAngle) * 8)
         UIView.animate(withDuration: 0.3) {
-            self.center = destinationPoint
-            self.superview?.layoutIfNeeded()
+            self.position = destinationPoint
         }
     }
     
     private func startScaleUpAnimation() {
         UIView.animate(withDuration: 0.3) {
-            self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.setAffineTransform(CGAffineTransform(scaleX: 1.3, y: 1.3))
         }
     }
     
     private func stopScaleUpAnimation() {
         UIView.animate(withDuration: 0.3) {
-            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.setAffineTransform(CGAffineTransform(scaleX: 1.0, y: 1.0))
         }
     }
     
     private func startTouchAnimation() {
+        zPosition = 1.0
         UIView.animate(withDuration: 0.3) {
-            self.alpha = 0.7
+            self.shadowRadius = 5
+            self.shadowOpacity = 10
         }
     }
     
     private func stopTouchAnimation() {
+        zPosition = 0
         UIView.animate(withDuration: 0.3) {
-            self.alpha = 1.0
+            self.shadowRadius = 3
+            self.shadowOpacity = 0
         }
     }
 }
