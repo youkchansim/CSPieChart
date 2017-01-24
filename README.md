@@ -30,11 +30,11 @@ pod "CSPieChart"
 ![](Example/ReadMeResource/view2.png)
 ![](Example/ReadMeResource/view3.png)
 
-First Step  - `@import CSPieChart` to your project
+First Step  - `import CSPieChart` to your project
 
 Second Step - You should `CSPieChartData`. This is model for piechart.
 ```Swift
-  let data = CSPieChartData(title: "test", value: 70)
+  let data = CSPieChartData(key: "test", value: 70)
 ```
 
 Third Step - Add a delegate `CSPieChartDataSource` & `CSPieChartDelegate` to your class & add two delegate methods 
@@ -42,26 +42,26 @@ Third Step - Add a delegate `CSPieChartDataSource` & `CSPieChartDelegate` to you
 public protocol CSPieChartDataSource {
     //  This is data for component
     func numberOfComponentData() -> Int
-    func pieChartComponentData(at indexPath: IndexPath) -> CSPieChartData
+    func pieChartComponentData(at index: Int) -> CSPieChartData
     
     //  This is colors that is component
     func numberOfComponentColors() -> Int
-    func pieChartComponentColor(at indexPath: IndexPath) -> UIColor
+    func pieChartComponentColor(at index: Int) -> UIColor
     
     //  If you implement this, you can show subView. example) 'UIImageView' or 'UILable'
     //  Caution!! You must designate view frame.
-    func numberOfComponentSubViews() -> Int
-    func pieChartComponentSubView(at indexPath: IndexPath) -> UIView
+    optional func numberOfComponentSubViews() -> Int
+    optional func pieChartComponentSubView(at index: Int) -> UIView
     
     //  If you are implement this, you apply color to line path
     //  Otherwish line color is applied default 'black'
-    func numberOfLineColors() -> Int
-    func pieChartLineColor(at indexPath: IndexPath) -> UIColor
+    optional func numberOfLineColors() -> Int
+    optional func pieChartLineColor(at index: Int) -> UIColor
 }
 ```
 ```Swift
 public protocol CSPieChartDelegate {
-    func didSelectedPieChartComponent(at indexPath: IndexPath)
+    optional func didSelectedPieChartComponent(at index: Int)
 }
 ```
 
