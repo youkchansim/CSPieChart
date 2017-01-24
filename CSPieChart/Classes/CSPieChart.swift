@@ -56,13 +56,13 @@ public class CSPieChart: UIView {
                     let degree: Double = data.value / sum * 360
                     let endAngle = startAngle + degree.toRadian
                     
-                    var componentColor: UIColor?
+                    var componentColor: UIColor = .white
                     if let componentColorsCount = dataSource?.numberOfComponentColors() {
                         let compoenetColorIndex = index % componentColorsCount
                         componentColor = dataSource?.pieChartComponentColor(at: compoenetColorIndex) ?? .white
                     }
                     
-                    var lineColor: UIColor?
+                    var lineColor: UIColor = .black
                     if let lineColorsCount = dataSource?.numberOfLineColors?() {
                         let lineColorIndex = index % lineColorsCount
                         lineColor = dataSource?.pieChartLineColor?(at: lineColorIndex) ?? .black
