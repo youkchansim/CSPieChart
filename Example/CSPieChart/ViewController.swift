@@ -31,54 +31,21 @@ class ViewController: UIViewController {
         .magenta
     ]
     
-    var subViewList: [UIView] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         pieChart?.dataSource = self
         pieChart?.delegate = self
         
-        pieChart?.pieChartRadiusRate = 0.6
-        pieChart?.pieChartLineLength = 10
+        pieChart?.pieChartRadiusRate = 0.5
+        pieChart?.pieChartLineLength = 12
         pieChart?.seletingAnimationType = .touch
         
-        let view1 = UILabel()
-        view1.text = "red"
-        view1.textAlignment = .center
-        view1.sizeToFit()
-        
-        let view2 = UILabel()
-        view2.text = "orange"
-        view2.textAlignment = .center
-        view2.sizeToFit()
-        
-        let view3 = UILabel()
-        view3.text = "yellow"
-        view3.textAlignment = .center
-        view3.sizeToFit()
-        
-        let view4 = UILabel()
-        view4.text = "green"
-        view4.textAlignment = .center
-        view4.sizeToFit()
-        
-        let view5 = UILabel()
-        view5.text = "blue"
-        view5.textAlignment = .center
-        view5.sizeToFit()
-        
-        let view6 = UILabel()
-        view6.text = "magenta"
-        view6.textAlignment = .center
-        view6.sizeToFit()
-        
-        subViewList.append(view1)
-        subViewList.append(view2)
-        subViewList.append(view3)
-        subViewList.append(view4)
-        subViewList.append(view5)
-        subViewList.append(view6)
+        pieChart?.show(animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
 }
 
@@ -108,11 +75,15 @@ extension ViewController: CSPieChartDataSource {
     }
     
     func numberOfComponentSubViews() -> Int {
-        return subViewList.count
+        return dataList.count
     }
     
     func pieChartComponentSubView(at index: Int) -> UIView {
-        return subViewList[index]
+        let view = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        view.image = UIImage(named: "test.png")
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
+        return view
     }
 }
 
