@@ -79,6 +79,21 @@ You can set some options
 }
 ```
 
+Last Step - You must call function that is `show`.
+```Swift
+  func show(animated: Bool) {
+     ...
+  }
+```
+### Example
+```Swift
+  func ViewDidLoad(...) {
+      ....
+      pieChart.show(animated: true)
+  }
+```
+
+
 If you need more information, check example
 
 ## Author
