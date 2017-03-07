@@ -80,7 +80,7 @@ public extension CSPieChart {
         self.animated = animated
         
         if let itemCount = dataSource?.numberOfComponentData() {
-            let sum = getTotalValueSum(count: itemCount)
+            let sum = getTotalValue(count: itemCount)
             
             var startAngle: CGFloat = 0
             if itemCount > 0 {
@@ -121,7 +121,7 @@ public extension CSPieChart {
 }
 
 fileprivate extension CSPieChart {
-    func getTotalValueSum(count: Int) -> Double {
+    func getTotalValue(count: Int) -> Double {
         var sum: Double = 0
         for index in 0..<count {
             if let data = dataSource?.pieChartComponentData(at: index) {
