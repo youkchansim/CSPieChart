@@ -160,13 +160,13 @@ extension CSPieChartComponent: CAAnimationDelegate {
                 subView?.add(alphaAnimation, forKey: "alphaAnimation")
                 
                 componentLayer.strokeEnd = 1
-                componentLayer.removeAnimation(forKey: "lineAnimation")
+                componentLayer.removeAnimation(forKey: "componentAnimation")
             } else if lineLayer.animation(forKey: "lineAnimation") == animation {
                 lineLayer.strokeEnd = 1
                 lineLayer.removeAnimation(forKey: "lineAnimation")
             } else if subView?.animation(forKey: "alphaAnimation") == animation {
                 subView?.opacity = 1
-                subView?.removeAnimation(forKey: "lineAnimation")
+                subView?.removeAnimation(forKey: "alphaAnimation")
             }
         }
     }
