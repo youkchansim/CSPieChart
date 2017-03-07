@@ -71,7 +71,7 @@ extension CSPieChartComponent {
             animation.fromValue = 0
             animation.toValue = 1
             animation.duration = 0.5
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             animation.delegate = self
             animation.isRemovedOnCompletion = false
             componentLayer.add(animation, forKey: "componentAnimation")
@@ -145,7 +145,7 @@ extension CSPieChartComponent: CAAnimationDelegate {
                 strokeAnimation.fromValue = 0
                 strokeAnimation.toValue = 1
                 strokeAnimation.fillMode = kCAFillModeBoth
-                strokeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+                strokeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                 strokeAnimation.delegate = self
                 strokeAnimation.isRemovedOnCompletion = false
                 lineLayer.add(strokeAnimation, forKey: "lineAnimation")
@@ -154,7 +154,7 @@ extension CSPieChartComponent: CAAnimationDelegate {
                 alphaAnimation.fromValue = 0
                 alphaAnimation.toValue = 1
                 alphaAnimation.fillMode = kCAFillModeBoth
-                alphaAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+                alphaAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                 alphaAnimation.delegate = self
                 alphaAnimation.isRemovedOnCompletion = false
                 subView?.add(alphaAnimation, forKey: "alphaAnimation")
