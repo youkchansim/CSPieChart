@@ -12,6 +12,9 @@ import CSPieChart
 class ViewController: UIViewController {
     
     @IBOutlet weak var pieChart: CSPieChart!
+    @IBAction func reloadPieChart(_ sender: Any) {
+        pieChart.reloadPieChart()
+    }
     
     var dataList = [
         CSPieChartData(key: "test1", value: 30),
