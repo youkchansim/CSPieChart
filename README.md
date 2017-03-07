@@ -8,6 +8,7 @@
 ![](Example/ReadMeResource/gif1.gif)
 ![](Example/ReadMeResource/gif2.gif)
 ![](Example/ReadMeResource/gif3.gif)
+![](Example/ReadMeResource/gif4.gif)
 
 ## Example
 
@@ -79,12 +80,7 @@ You can set some options
 }
 ```
 
-Last Step - You must call function that is `show`.
-```Swift
-  func show(animated: Bool) {
-     ...
-  }
-```
+Last Step - You must call `show`.
 ### Example
 ```Swift
   func ViewDidLoad(...) {
