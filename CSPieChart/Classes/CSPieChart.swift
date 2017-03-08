@@ -17,8 +17,8 @@ public enum SelectingAnimationType {
 
 public class CSPieChart: UIView {
     
-    public var dataSource: CSPieChartDataSource?
-    public var delegate: CSPieChartDelegate?
+    public weak var dataSource: CSPieChartDataSource?
+    public weak var delegate: CSPieChartDelegate?
     
     //  Pie chart radius rate that is percentage of frames in the superview
     public var pieChartRadiusRate: CGFloat = 0.7
