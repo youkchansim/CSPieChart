@@ -103,7 +103,7 @@ public extension CSPieChart {
                     component.subView = subView?.layer
                     component.lineColor = lineColor
                     component.lineLength = pieChartLineLength
-                    component.animate(animated: animated)
+                    component.draw(animated: animated)
                     
                     layer.addSublayer(component)
                     componentList.append(component)

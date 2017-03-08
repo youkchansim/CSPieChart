@@ -60,7 +60,7 @@ class CSPieChartComponent: CALayer {
 }
 
 extension CSPieChartComponent {
-    func animate(animated: Bool) {
+    func draw(animated: Bool) {
         self.animated = animated
         
         createComponentLayer(withCenter: position, radius: radius)
