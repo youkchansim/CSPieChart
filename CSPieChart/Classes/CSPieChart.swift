@@ -32,6 +32,7 @@ public class CSPieChart: UIView {
     fileprivate var selectedComponent: CSPieChartComponent?
     
     fileprivate var componentList: [CSPieChartComponent] = []
+    fileprivate var subViewList: [UIView?] = []
     
     fileprivate var container = CALayer()
     fileprivate var animated = false
@@ -107,6 +108,7 @@ public extension CSPieChart {
                     
                     layer.addSublayer(component)
                     componentList.append(component)
+                    subViewList.append(subView)
                     
                     startAngle = endAngle
                 }
@@ -170,5 +172,6 @@ fileprivate extension CSPieChart {
     func clear() {
         layer.sublayers?.removeAll()
         componentList.removeAll()
+        subViewList.removeAll()
     }
 }
