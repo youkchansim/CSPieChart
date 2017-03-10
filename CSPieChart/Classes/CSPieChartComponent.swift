@@ -28,6 +28,7 @@ class CSPieChartComponent: CALayer {
     
     fileprivate var radius: CGFloat = 0
     fileprivate var animated = false
+    fileprivate var componentPath = UIBezierPath()
     
     init(frame: CGRect, startAngle: CGFloat, endAngle: CGFloat, data: CSPieChartData, index: Int, radiusRate: CGFloat) {
         self.startAngle = startAngle
@@ -91,6 +92,9 @@ extension CSPieChartComponent {
         
         let width = radius
         componentLayer.lineWidth = CGFloat(width)
+        
+        componentPath.move(to: withCenter)
+        componentPath.addArc(withCenter: withCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
         addSublayer(componentLayer)
     }
@@ -174,7 +178,7 @@ extension CSPieChartComponent: CAAnimationDelegate {
 
 extension CSPieChartComponent {
     func containPoint(point: CGPoint) -> Bool {
-        return componentLayer.path?.contains(point) ?? false
+        return componentPath.contains(point)
     }
     
     func startAnimation(animationType: SelectingAnimationType) {
