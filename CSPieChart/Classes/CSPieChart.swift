@@ -114,6 +114,11 @@ public extension CSPieChart {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        reloadPieChart()
+    }
+    
     public func reloadPieChart() {
         clear()
         show(animated: animated)
