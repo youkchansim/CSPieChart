@@ -20,13 +20,13 @@ public class CSPieChart: UIView {
     public weak var dataSource: CSPieChartDataSource?
     public weak var delegate: CSPieChartDelegate?
     
-    //  Pie chart radius rate that is percentage of frames in the superview
+    ///  Pie chart radius rate that is percentage of frames in the superview
     public var pieChartRadiusRate: CGFloat = 0.7
     
-    // Pie chart line length between component and subview
+    /// Pie chart line length between component and subview
     public var pieChartLineLength: CGFloat = 10
     
-    //  This is piechart component selecting animation. default is none
+    ///  This is piechart component selecting animation. default is none
     public var seletingAnimationType: SelectingAnimationType = .none
     
     fileprivate var selectedComponent: CSPieChartComponent?
