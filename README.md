@@ -1,6 +1,6 @@
 # CSPieChart
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-Compatible-brightgreen.svg?style=flat)]
+![Carthage compatible](https://img.shields.io/badge/Carthage-Compatible-brightgreen.svg?style=flat)
 [![Version](https://img.shields.io/cocoapods/v/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
 [![License](https://img.shields.io/cocoapods/l/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
 ![iOS 8.3+](https://img.shields.io/badge/iOS-8.3%2B-blue.svg)
