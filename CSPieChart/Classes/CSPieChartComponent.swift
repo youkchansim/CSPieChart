@@ -82,7 +82,7 @@ extension CSPieChartComponent {
     func createComponentLayer(withCenter: CGPoint, radius: CGFloat) {
         let path = UIBezierPath()
         let startPoint = CGPoint(x: withCenter.x + cos(startAngle) * (radius - (radius / 2)), y: withCenter.y + sin(startAngle) * (radius - (radius / 2)))
-        let endPoint = CGPoint(x: withCenter.x + cos(endAngle) * (radius - (radius / 2)), y: withCenter.y + sin(endAngle) * (radius - (radius / 2)))
+        
         path.move(to: startPoint)
         path.addArc(withCenter: withCenter, radius: radius - (radius / 2), startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
