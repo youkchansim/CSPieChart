@@ -54,9 +54,9 @@ public class CSPieChart: UIView {
         if component.containPoint(point: location) {
             component.startAnimation(animationType: seletingAnimationType)
             selectedComponent = component
-        } else {
-            super.touchesBegan(touches, with: event)
         }
+        
+        super.touchesBegan(touches, with: event)
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
