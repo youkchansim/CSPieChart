@@ -38,39 +38,62 @@ public class CSPieChart: UIView {
     fileprivate var animated = false
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self) else { return }
-        guard let layers = layer.sublayers else { return }
-        guard let component = (layers.flatMap { $0 as? CSPieChartComponent }.filter { $0.containPoint(point: location) }.first) else { return }
+        guard let location = touches.first?.location(in: self) else {
+            super.touchesBegan(touches, with: event)
+            return
+        }
+        guard let layers = layer.sublayers else {
+            super.touchesBegan(touches, with: event)
+            return
+        }
+        guard let component = (layers.flatMap { $0 as? CSPieChartComponent }.filter { $0.containPoint(point: location) }.first) else {
+            super.touchesBegan(touches, with: event)
+            return
+        }
         
-        if !component.isAnimated {
+        if component.containPoint(point: location) {
             component.startAnimation(animationType: seletingAnimationType)
             selectedComponent = component
         } else {
-            component.stopAnimation(animationType: seletingAnimationType)
-            selectedComponent = nil
+            super.touchesBegan(touches, with: event)
         }
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self) else { return }
-        guard let component = selectedComponent else { return }
+        guard let location = touches.first?.location(in: self) else {
+            super.touchesMoved(touches, with: event)
+            return
+        }
+        guard let component = selectedComponent else {
+            super.touchesMoved(touches, with: event)
+            return
+        }
         
         if !component.containPoint(point: location) {
             component.stopAnimation(animationType: seletingAnimationType)
             selectedComponent = nil
+            super.touchesMoved(touches, with: event)
         }
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self) else { return }
-        guard let component = selectedComponent else { return }
-        
-        if component.containPoint(point: location) {
-            delegate?.didSelectedPieChartComponent?(at: component.index!)
+        guard let location = touches.first?.location(in: self) else {
+            super.touchesEnded(touches, with: event)
+            return
+        }
+        guard let component = selectedComponent else {
+            super.touchesEnded(touches, with: event)
+            return
         }
         
         component.stopAnimation(animationType: seletingAnimationType)
         selectedComponent = nil
+        
+        if component.containPoint(point: location) {
+            delegate?.didSelectedPieChartComponent?(at: component.index!)
+        } else {
+            super.touchesEnded(touches, with: event)
+        }
     }
 }
 
