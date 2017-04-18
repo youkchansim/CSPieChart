@@ -47,6 +47,32 @@ class ViewController: UIViewController {
         pieChart?.show(animated: true)
     }
     
+    fileprivate var touchDistance: CGFloat = 0
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: view) else {
+            return
+        }
+        
+        touchDistance = location.x
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: view) else {
+            return
+        }
+        
+        touchDistance -= location.x
+        
+        if touchDistance > 100 {
+            print("Right")
+        } else if touchDistance < -100 {
+            print("Left")
+        }
+        
+        touchDistance = 0
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
