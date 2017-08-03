@@ -108,7 +108,7 @@ public extension CSPieChart {
             
             var startAngle: CGFloat = 0
             if itemCount > 0 {
-                if let data = dataSource?.pieChartComponentData(at: 0) {
+                if let data = dataSource?.pieChartComponentData(at: 0), data.value > 0 {
                     startAngle = (sum / data.value).toRadian
                 }
             }
