@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
 [![License](https://img.shields.io/cocoapods/l/CSPieChart.svg?style=flat)](http://cocoapods.org/pods/CSPieChart)
 ![iOS 8.3+](https://img.shields.io/badge/iOS-8.3%2B-blue.svg)
-![Swift 3.0+](https://img.shields.io/badge/Swift-3.0%2B-orange.svg)
+![Swift 4.2+](https://img.shields.io/badge/Swift-4.2%2B-orange.svg)
 
 ![](Example/ReadMeResource/gif1.gif)
 ![](Example/ReadMeResource/gif2.gif)
