@@ -42,28 +42,30 @@ Second Step - You should `CSPieChartData`. This is model for piechart.
 Third Step - Add a delegate `CSPieChartDataSource` & `CSPieChartDelegate` to your class & add two delegate methods 
 ```Swift
 public protocol CSPieChartDataSource {
-    //  This is data for component
+
+    ///  Component data
     func numberOfComponentData() -> Int
-    func pieChartComponentData(at index: Int) -> CSPieChartData
-    
-    //  This is colors that is component
+    func pieChart(_ pieChart: CSPieChart, dataForComponentAt index: Int) -> CSPieChartData
+
+    ///  Component colors
     func numberOfComponentColors() -> Int
-    func pieChartComponentColor(at index: Int) -> UIColor
-    
-    //  If you implement this, you can show subView. example) 'UIImageView' or 'UILable'
-    //  Caution!! You must designate view frame.
-    optional func numberOfComponentSubViews() -> Int
-    optional func pieChartComponentSubView(at index: Int) -> UIView
-    
-    //  If you are implement this, you apply color to line path
-    //  Otherwish line color is applied default 'black'
-    optional func numberOfLineColors() -> Int
-    optional func pieChartLineColor(at index: Int) -> UIColor
+    func pieChart(_ pieChart: CSPieChart, colorForComponentAt index: Int) -> UIColor
+
+    ///  If you are implement this, you can show subView. example) 'UIImageView' or 'UILable'
+    @objc optional func numberOfComponentSubViews() -> Int
+    @objc optional func pieChart(_ pieChart: CSPieChart, viewForComponentAt index: Int) -> UIView
+
+    ///  If you are implement this, you apply color to line path
+    ///  Otherwish line color is applied default 'black'
+    @objc optional func numberOfLineColors() -> Int
+    @objc optional func pieChart(_ pieChart: CSPieChart, lineColorForComponentAt index: Int) -> UIColor
 }
 ```
 ```Swift
 public protocol CSPieChartDelegate {
-    optional func didSelectedPieChartComponent(at index: Int)
+
+    /// Component select
+    @objc optional func pieChart(_ pieChart: CSPieChart, didSelectComponentAt index: Int)
 }
 ```
 
