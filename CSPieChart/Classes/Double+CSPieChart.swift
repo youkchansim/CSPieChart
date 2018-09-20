@@ -8,6 +8,6 @@
 
 extension Double {
     var toRadian: CGFloat {
-        return CGFloat(self * (M_PI / 180))
+        return CGFloat(self * (Double.pi / 180))
     }
 }

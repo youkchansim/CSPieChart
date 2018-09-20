@@ -46,7 +46,7 @@ public class CSPieChart: UIView {
             super.touchesBegan(touches, with: event)
             return
         }
-        guard let component = (layers.flatMap { $0 as? CSPieChartComponent }.filter { $0.containPoint(point: location) }.first) else {
+        guard let component = (layers.compactMap { $0 as? CSPieChartComponent }.filter { $0.containPoint(point: location) }.first) else {
             super.touchesBegan(touches, with: event)
             return
         }
@@ -89,8 +89,8 @@ public class CSPieChart: UIView {
         component.stopAnimation(animationType: seletingAnimationType)
         selectedComponent = nil
         
-        if component.containPoint(point: location) {
-            delegate?.didSelectedPieChartComponent?(at: component.index!)
+        if component.containPoint(point: location), let index = component.index {
+            delegate?.pieChart?(self, didSelectComponentAt: index)
         } else {
             super.touchesEnded(touches, with: event)
         }
@@ -108,13 +108,13 @@ public extension CSPieChart {
             
             var startAngle: CGFloat = 0
             if itemCount > 0 {
-                if let data = dataSource?.pieChartComponentData(at: 0), data.value > 0 {
+                if let data = dataSource?.pieChart(self, dataForComponentAt: 0), data.value > 0 {
                     startAngle = (sum / data.value).toRadian
                 }
             }
             
             for index in 0..<itemCount {
-                if let data = dataSource?.pieChartComponentData(at: index) {
+                if let data = dataSource?.pieChart(self, dataForComponentAt: index) {
                     let degree: Double = data.value / sum * 360
                     let endAngle = startAngle + degree.toRadian
                     
@@ -154,7 +154,7 @@ fileprivate extension CSPieChart {
     func getTotalValue(count: Int) -> Double {
         var sum: Double = 0
         for index in 0..<count {
-            if let data = dataSource?.pieChartComponentData(at: index) {
+            if let data = dataSource?.pieChart(self, dataForComponentAt: index) {
                 sum += data.value
             }
         }
@@ -166,7 +166,7 @@ fileprivate extension CSPieChart {
         var componentColor: UIColor = .white
         if let componentColorsCount = dataSource?.numberOfComponentColors() {
             let compoenetColorIndex = index % componentColorsCount
-            componentColor = dataSource?.pieChartComponentColor(at: compoenetColorIndex) ?? .white
+            componentColor = dataSource?.pieChart(self, colorForComponentAt: compoenetColorIndex) ?? .white
         }
         
         return componentColor
@@ -176,7 +176,7 @@ fileprivate extension CSPieChart {
         var lineColor: UIColor = .black
         if let lineColorsCount = dataSource?.numberOfLineColors?() {
             let lineColorIndex = index % lineColorsCount
-            lineColor = dataSource?.pieChartLineColor?(at: lineColorIndex) ?? .black
+            lineColor = dataSource?.pieChart?(self, lineColorForComponentAt: lineColorIndex) ?? .black
         }
         
         return lineColor
@@ -186,7 +186,7 @@ fileprivate extension CSPieChart {
         var subView: UIView?
         if let subViewsCount = dataSource?.numberOfComponentSubViews?() {
             let subViewIndex = index % subViewsCount
-            subView = dataSource?.pieChartComponentSubView?(at: subViewIndex)
+            subView = dataSource?.pieChart?(self, viewForComponentAt: subViewIndex)
         }
         
         return subView
