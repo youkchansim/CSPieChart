@@ -8,6 +8,7 @@
 
 @objc
 public protocol CSPieChartDelegate {
+    
     /// Component select
-    @objc optional func didSelectedPieChartComponent(at index: Int)
+    @objc optional func pieChart(_ pieChart: CSPieChart, didSelectComponentAt index: Int)
 }

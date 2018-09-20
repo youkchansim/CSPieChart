@@ -72,18 +72,15 @@ class ViewController: UIViewController {
         
         touchDistance = 0
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
 }
 
 extension ViewController: CSPieChartDataSource {
+    
     func numberOfComponentData() -> Int {
         return dataList.count
     }
     
-    func pieChartComponentData(at index: Int) -> CSPieChartData {
+    func pieChart(_ pieChart: CSPieChart, dataForComponentAt index: Int) -> CSPieChartData {
         return dataList[index]
     }
     
@@ -91,7 +88,7 @@ extension ViewController: CSPieChartDataSource {
         return colorList.count
     }
     
-    func pieChartComponentColor(at index: Int) -> UIColor {
+    func pieChart(_ pieChart: CSPieChart, colorForComponentAt index: Int) -> UIColor {
         return colorList[index]
     }
     
@@ -99,7 +96,7 @@ extension ViewController: CSPieChartDataSource {
         return colorList.count
     }
     
-    func pieChartLineColor(at index: Int) -> UIColor {
+    func pieChart(_ pieChart: CSPieChart, lineColorForComponentAt index: Int) -> UIColor {
         return colorList[index]
     }
     
@@ -107,7 +104,7 @@ extension ViewController: CSPieChartDataSource {
         return dataList.count
     }
     
-    func pieChartComponentSubView(at index: Int) -> UIView {
+    func pieChart(_ pieChart: CSPieChart, viewForComponentAt index: Int) -> UIView {
         let view = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         view.image = UIImage(named: "test.png")
         view.layer.cornerRadius = 15
@@ -117,7 +114,8 @@ extension ViewController: CSPieChartDataSource {
 }
 
 extension ViewController: CSPieChartDelegate {
-    func didSelectedPieChartComponent(at index: Int) {
+    
+    func pieChart(_ pieChart: CSPieChart, didSelectComponentAt index: Int) {
         let data = dataList[index]
         print(data.key)
     }

@@ -1,0 +1,6 @@
+framework module CSPieChart {
+  umbrella header "CSPieChart-umbrella.h"
+
+  export *
+  module * { export * }
+}
